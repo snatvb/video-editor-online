@@ -15,7 +15,7 @@ let make = () => {
     RSpring.makeOptions(
       ~from=ReactDOM.Style.make(~opacity="0", ~transform="scale(1.1)", ()),
       ~enter=ReactDOM.Style.make(~opacity="1", ~transform="scale(1)", ()),
-      ~leave=ReactDOM.Style.make(~opacity="0", ()),
+      ~leave=ReactDOM.Style.make(~opacity="0", ~transform="scale(0.9)", ()),
       ~config=Some(RSpring.makeConfig(~duration=200, ())),
       (),
     ),
@@ -23,7 +23,6 @@ let make = () => {
 
   React.useEffect1(() => {
     switch url.path {
-    | list{"deal"} => setTitle(document, `${name} — Experience`)
     | list{"about"} => setTitle(document, `${name} — About`)
     | _ => setTitle(document, name)
     }
@@ -38,8 +37,8 @@ let make = () => {
         {transitions((style, item) => {
           <RSpring.Animated.Div style className="page">
             {switch item["path"] {
-            | list{} => <div />
-            | _ => <div />
+            | list{} => <Project />
+            | _ => React.string("Unknown page")
             }}
           </RSpring.Animated.Div>
         })}

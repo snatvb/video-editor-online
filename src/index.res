@@ -1,3 +1,4 @@
+%%raw(`import 'antd/dist/antd.dark.css';`)
 %%raw(`import './styles/global.css';`)
 
 ReactDOM.render(

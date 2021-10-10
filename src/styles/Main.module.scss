@@ -7,18 +7,17 @@
   height: 100%;
 }
 
+.base {
+  display: flex;
+  flex-direction: column;
+}
+
 .header {
-  position: fixed;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 80px;
+  height: 40px;
   background-color: $secondary-color;
-  z-index: 2;
 }
 
 .content {
-  padding-left: 80px;
   position: relative;
   background-color: $background-color;
 }
@@ -27,7 +26,7 @@
   position: absolute;
   bottom: 5px;
   right: 5px;
-  font-weight: 100;
+  font-weight: 300;
   text-transform: uppercase;
   color: $secondary-color;
 }

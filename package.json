@@ -9,11 +9,16 @@
     "clean": "rescript clean"
   },
   "dependencies": {
+    "@ffmpeg/core": "^0.10.0",
+    "@ffmpeg/ffmpeg": "^0.10.1",
     "@rescript/react": "^0.10.3",
     "@ryyppy/rescript-promise": "^2.1.0",
+    "add": "^2.0.6",
+    "antd": "^4.16.13",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-spring": "^9.2.6"
+    "react-spring": "^9.2.6",
+    "yarn": "^1.22.15"
   },
   "devDependencies": {
     "@jihchi/plugin-rescript": "^1.0.0",

@@ -1,5 +1,3 @@
-@module("./logo.svg") external logo: string = "default"
-
 module Routes = {
   @react.component
   let make = () => {
