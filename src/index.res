@@ -1,7 +1,9 @@
-%%raw(`import 'antd/dist/antd.dark.css';`)
-%%raw(`import './styles/global.css';`)
+%%raw(`import 'rsuite/dist/rsuite.min.css';`)
+%%raw(`import './styles/global.scss';`)
 
 ReactDOM.render(
-  <React.StrictMode> <App /> </React.StrictMode>,
+  <React.StrictMode>
+    <RSuite.CustomProvider theme={#dark}> <App /> </RSuite.CustomProvider>
+  </React.StrictMode>,
   ReactDOM.querySelector("#root")->Belt.Option.getExn,
 )
