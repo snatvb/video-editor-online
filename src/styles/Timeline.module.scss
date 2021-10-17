@@ -1,0 +1,74 @@
+@import './variables.scss';
+
+$bracket-width: 8px;
+$bracket-offset: 3px;
+
+.base {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.timeline {
+    position: relative;
+    width: 100%;
+    height: 100px;
+    background-color: $primary-color-darken;
+    box-shadow: inset 1px 1px 0px 0px rgba(#fff, .7);
+
+    &::after {
+        z-index: 0;
+        pointer-events: none;
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.8;
+        background-size: 10px 100%;
+        background-image: repeating-linear-gradient(to right, $primary-color, $primary-color 2px, transparent 1px, transparent);
+        mask-image: linear-gradient(0deg, transparent 0%, #fff 50%, transparent 100%);
+        -webkit-mask-image: linear-gradient(0deg, transparent 0%, #fff 50%, transparent 100%);
+    }
+}
+
+.bracket {
+    cursor: pointer;
+    position: absolute;
+    width: $bracket-width;
+    top: $bracket-offset * -1;
+    bottom: 0;
+
+    &.start {
+        box-shadow: inset $bracket-offset $bracket-offset 0px 0px #fff, 0px $bracket-offset 0px 0px #fff;
+    }
+
+    &.end {
+        box-shadow: inset $bracket-offset * -1 $bracket-offset 0px 0px #fff, 0px $bracket-offset 0px 0px #fff;
+    }
+}
+
+.cursor {
+    width: 1px;
+    height: 100%;
+    position: absolute;
+    background-color: #fff;
+    top: 0;
+    left: 0;
+
+    &-pin {
+        cursor: pointer;
+        width: 15px;
+        height: 15px;
+        background-color: #fff;
+        position: absolute;
+        left: 50%;
+        top: 0;
+        transform: translate(-50%, -100%);
+    }
+}

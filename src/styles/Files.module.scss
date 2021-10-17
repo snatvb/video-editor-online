@@ -23,6 +23,10 @@
     display: flex;
 }
 
+.description {
+    width: 100%;
+}
+
 .name {
     font-size: 14px;
 }
@@ -44,3 +48,8 @@
     height: 100%;
 }
 
+.add {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
