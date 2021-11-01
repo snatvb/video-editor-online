@@ -3,6 +3,7 @@ build
 node_modules
 dist
 lib
+.vscode
 
 .merlin
 .bsb.lock

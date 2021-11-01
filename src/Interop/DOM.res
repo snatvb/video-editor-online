@@ -22,6 +22,11 @@ module Element = {
   }
   @send external getBoundingClientRect: Dom.element => bounds = "getBoundingClientRect"
   @get external getClientWidth: Dom.element => float = "clientWidth"
+  @set @scope("style") external setTranslate: Dom.element => string => unit = "transform"
+
+  let setTranslateX = (element, x) => {
+    element->setTranslate(`translateX(${x->Belt.Int.toString}px)`)
+  }
 }
 
 module Style = {
@@ -48,4 +53,9 @@ module Document = {
     addEventListener(document, event, fn)
     () => removeEventListener(document, event, fn)
   }
+}
+
+module ReactEventMouse = {
+  @get external currentTarget: ReactEvent.Mouse.t => Dom.element = "currentTarget"
+  @get external target: ReactEvent.Mouse.t => Dom.element = "target"
 }

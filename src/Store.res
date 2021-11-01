@@ -27,7 +27,7 @@ module Timeline = {
     mutable fileId: option<int>,
   }
 
-  let initState = {fileId: None, currentTime: 0.0, start: 0.0, end: 1.0, forSetCurrentTime: 0.0 }
+  let initState = {fileId: None, currentTime: 0.0, start: 0.0, end: 1.0, forSetCurrentTime: 0.0}
   let store = Mobx.observable({...initState, currentTime: initState.currentTime})
 
   let reset = Mobx.action(() => {
@@ -63,5 +63,7 @@ module Timeline = {
     Belt.Option.flatMap(store.fileId, Files.store.items->Map.get)
   )
 
-  let curretFileSrc = Mobx.computed(() => currentFile->Mobx.readComputed-> Belt.Option.map(File.toSrc))
+  let curretFileSrc = Mobx.computed(() =>
+    currentFile->Mobx.readComputed->Belt.Option.map(File.toSrc)
+  )
 }

@@ -1,6 +1,6 @@
 type t
 type config
-type uint8Array
+type uint8Array = File.uint8Array
 
 @obj
 external makeOptions: (~log: bool=?, ~corePath: string=?) => config = ""
@@ -12,6 +12,9 @@ external makeOptions: (~log: bool=?, ~corePath: string=?) => config = ""
 @send external run: t => (string, string, string) => Promise.t<unit> = "run"
 
 @send external fs: t => ([#writeFile | #readFile], string, uint8Array) => Promise.t<unit> = "FS"
+@send external readData: t => (@as("readFile") _, string) => uint8Array = "FS"
+
+let deafultOptions = makeOptions(~log=true, ~corePath="ffmpeg-core/ffmpeg-core.js")
 
 let ff = create(makeOptions(~log=true, ~corePath="ffmpeg-core/ffmpeg-core.js"))
 ff->load->ignore

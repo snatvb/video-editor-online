@@ -9,6 +9,12 @@ let setPosition = (element, widthWrapper, positionPercent) => {
   )
 }
 
+type dragging =
+  | None
+  | StartBracket
+  | Cursor
+  | EndBracket
+
 let make = React.memo(
   Mobx.observer((_: props) => {
     let baseRef = React.useRef(Js.Nullable.null)
@@ -16,7 +22,7 @@ let make = React.memo(
     let startRef = React.useRef(Js.Nullable.null)
     let cursorRef = React.useRef(Js.Nullable.null)
     let endRef = React.useRef(Js.Nullable.null)
-    let (isDragging, setIsDragging) = React.useState(() => false)
+    let (dragging, setDragging) = React.useState(() => None)
 
     let state = Store.Timeline.store
 
@@ -49,23 +55,49 @@ let make = React.memo(
     let updateCurrentTime = Ruse.useThrottleFn(cursorX => {
       switch timelineRef.current->Js.Nullable.toOption {
       | Some(timeline) => {
-        let bounding = DOM.Element.getBoundingClientRect(timeline)
-        let x = cursorX->Belt.Int.toFloat -. bounding.x
-        Store.Timeline.setForSetCurrentTime(x /. timeline->DOM.Element.getClientWidth)
-      }
+          let bounding = DOM.Element.getBoundingClientRect(timeline)
+          let x = cursorX->Belt.Int.toFloat -. bounding.x
+          Store.Timeline.setForSetCurrentTime(x /. timeline->DOM.Element.getClientWidth)
+        }
       | _ => ()
       }
     }, 50)
 
+    let updateBracketTime = Ruse.useThrottleFn(((cursorX, dragging)) => {
+      switch timelineRef.current->Js.Nullable.toOption {
+      | Some(timeline) => {
+          let bounding = DOM.Element.getBoundingClientRect(timeline)
+          let x = cursorX->Belt.Int.toFloat -. bounding.x
+          let proportional = x /. timeline->DOM.Element.getClientWidth
+          
+          switch dragging {
+          | StartBracket => Store.Timeline.setStart(proportional)
+          | EndBracket => Store.Timeline.setEnd(proportional)
+          | _ => ()
+          }
+        }
+      | _ => ()
+      }
+    }, 50)
+
+    let updateDragPosition = (cursorX, dragType) => {
+      updateCurrentTime(cursorX)
+      switch dragType {
+      | StartBracket => updateBracketTime((cursorX, StartBracket))
+      | EndBracket => updateBracketTime((cursorX, EndBracket))
+      | _ => ()
+      }
+    }
+
     React.useEffect1(() => {
-      if isDragging {
+      if dragging !== None {
         let offMouseMove = DOM.Document.on(#mousemove, event => {
-          event->DOM.Document.getPageX->updateCurrentTime
+          updateDragPosition(event->DOM.Document.getPageX, dragging)
         })
 
         let offMouseUp = DOM.Document.on(#mouseup, event => {
-          event->DOM.Document.getPageX->updateCurrentTime
-          setIsDragging(_ => false)
+          updateDragPosition(event->DOM.Document.getPageX, dragging)
+          setDragging(_ => None)
         })
 
         Some(
@@ -77,11 +109,27 @@ let make = React.memo(
       } else {
         None
       }
-    }, [isDragging])
+    }, [dragging])
 
     let handleMouseDown = event => {
-      event->ReactEvent.Mouse.pageX->updateCurrentTime
-      setIsDragging(_ => true)
+      switch (
+        startRef.current->Js.Nullable.toOption,
+        cursorRef.current->Js.Nullable.toOption,
+        endRef.current->Js.Nullable.toOption,
+      ) {
+      | (Some(startElement), Some(_), Some(endElement)) =>
+        let target = event->DOM.ReactEventMouse.target
+        setDragging(_ =>
+          if target === startElement {
+            StartBracket
+          } else if target === endElement {
+            EndBracket
+          } else {
+            Cursor
+          }
+        )
+      | _ => ()
+      }
     }
 
     <div className={styles["base"]} ref={baseRef->ReactDOM.Ref.domRef}>
@@ -100,6 +148,7 @@ let make = React.memo(
           className={CX.cx([styles["bracket"], styles["end"]])} ref={endRef->ReactDOM.Ref.domRef}
         />
       </div>
+      <button onClick={_ => Export.make()}>{React.string("Export")}</button>
     </div>
   }),
 )
