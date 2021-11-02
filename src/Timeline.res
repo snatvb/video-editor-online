@@ -52,6 +52,18 @@ let make = React.memo(
       Some(Window.on(#resize, () => updatePositions(state.start, state.currentTime, state.end)))
     })
 
+    React.useEffect0(() => {
+      Window.onKeyDown(#BracketLeft, () => {
+        Store.Timeline.setStart(state.currentTime)
+      })->Some
+    })
+
+    React.useEffect0(() => {
+      Window.onKeyDown(#BracketRight, () => {
+        Store.Timeline.setEnd(state.currentTime)
+      })->Some
+    })
+
     let updateCurrentTime = Ruse.useThrottleFn(cursorX => {
       switch timelineRef.current->Js.Nullable.toOption {
       | Some(timeline) => {
