@@ -49,6 +49,7 @@ let make = () => {
   }, [url])
 
   <div className={styles["base"]}>
+    <div className={styles["lang-selector"]}> <LanguageSelector /> </div>
     <Header />
     <main className={cx([styles["content"], Some("full-size")])}>
       <div className={styles["body"]}>
