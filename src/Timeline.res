@@ -69,7 +69,7 @@ let make = React.memo(
           let bounding = DOM.Element.getBoundingClientRect(timeline)
           let x = cursorX->Belt.Int.toFloat -. bounding.x
           let proportional = x /. timeline->DOM.Element.getClientWidth
-          
+
           switch dragging {
           | StartBracket => Store.Timeline.setStart(proportional)
           | EndBracket => Store.Timeline.setEnd(proportional)
@@ -148,7 +148,6 @@ let make = React.memo(
           className={CX.cx([styles["bracket"], styles["end"]])} ref={endRef->ReactDOM.Ref.domRef}
         />
       </div>
-      <button onClick={_ => Export.make()}>{React.string("Export")}</button>
     </div>
   }),
 )

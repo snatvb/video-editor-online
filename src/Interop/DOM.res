@@ -1,9 +1,19 @@
 module Video = {
+  type readyState =
+    | HaveNothing
+    | HaveMetadata
+    | HaveCurrentData
+    | HaveFutureData
+    | HaveEnoughData
+
   @send external play: Dom.element => unit = "play"
   @send external pause: Dom.element => unit = "pause"
   @set external setCurrentTime: (Dom.element, float) => unit = "currentTime"
   @get external getCurrentTime: Dom.element => float = "currentTime"
   @get external getDuration: Dom.element => float = "duration"
+  @get external getReadyState: Dom.element => readyState = "readyState"
+
+  @set external onLoad: Dom.element => (unit => unit) => unit = "onloadeddata"
 
   let stop = video => {
     video->pause

@@ -13,5 +13,6 @@ module Routes = {
 let make = () => {
   <LocaleContext.Provider>
     <Routes />
+    <ExportProgress />
   </LocaleContext.Provider>
 }

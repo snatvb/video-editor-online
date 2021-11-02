@@ -23,11 +23,12 @@ module Timeline = {
     mutable start: float,
     mutable end: float,
     mutable currentTime: float,
+    mutable duration: float,
     mutable forSetCurrentTime: float,
     mutable fileId: option<int>,
   }
 
-  let initState = {fileId: None, currentTime: 0.0, start: 0.0, end: 1.0, forSetCurrentTime: 0.0}
+  let initState = {fileId: None, currentTime: 0.0, start: 0.0, end: 1.0, forSetCurrentTime: 0.0, duration: 0.0}
   let store = Mobx.observable({...initState, currentTime: initState.currentTime})
 
   let reset = Mobx.action(() => {
@@ -36,6 +37,7 @@ module Timeline = {
     store.currentTime = initState.currentTime
     store.end = initState.end
     store.forSetCurrentTime = initState.forSetCurrentTime
+    store.duration = initState.duration
   })
 
   let setFileId = Mobx.action(fileId => {
@@ -49,6 +51,10 @@ module Timeline = {
 
   let setCurrentTime = Mobx.action(currentTime => {
     store.currentTime = currentTime
+  })
+
+  let setDuration = Mobx.action(duration => {
+    store.duration = duration
   })
 
   let setForSetCurrentTime = Mobx.action(time => {
@@ -66,4 +72,16 @@ module Timeline = {
   let curretFileSrc = Mobx.computed(() =>
     currentFile->Mobx.readComputed->Belt.Option.map(File.toSrc)
   )
+}
+
+module Progress = {
+  type store =
+    | Idle
+    | Success
+    | Failure(float)
+    | Progress(float)
+  
+  let store = Mobx.Box.make(Idle)
+
+  let set = Mobx.action(value => Mobx.Box.set(store, value)->ignore)
 }

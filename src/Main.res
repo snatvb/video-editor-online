@@ -31,7 +31,12 @@ let make = () => {
   }, [url])
 
   <div className={styles["base"]}>
-    <header className={styles["header"]}> <div /> </header>
+    <header className={styles["header"]}>
+      <div/>
+      <div>
+        <RSuite.Button size={#xs} appearance={#primary} onClick={_ => Export.make()}> {React.string("Export")} </RSuite.Button>
+      </div>
+    </header>
     <main className={cx([styles["content"], Some("full-size")])}>
       <div className={styles["body"]}>
         {transitions((style, item) => {

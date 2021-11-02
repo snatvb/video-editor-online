@@ -37,3 +37,31 @@ module Button = {
     ~onClick: ReactEvent.Mouse.t => unit=?,
   ) => React.element = "Button"
 }
+
+module Progress = {
+  @react.component @module("antd")
+  external make: (
+    ~_type: [
+      | #line
+      | #circle
+      | #dashboard
+    ]=?,
+    ~className: string=?,
+    ~percent: float=?,
+    ~width: float=?,
+    ~showInfo: bool=?,
+    ~steps: int=?,
+    ~status: [
+      | #success 
+      | @as("exception") #except
+      | #normal 
+      | #active
+    ]=?,
+    ~trailColor: string=?,
+    ~strokeColor: {..}=?,
+    ~strokeLinecap: [
+      | #round 
+      | #square 
+    ]=?,
+  ) => React.element = "Progress"
+}

@@ -12,3 +12,10 @@ type disposer = unit => unit
 
 
 @module("mobx-react") @val external observer: 'a => 'a = "observer"
+
+module Box = {
+    type t<'a>
+    @module("mobx") @val @scope("observable") external make: 'a => t<'a> = "box"
+    @send external get: t<'a> => 'a = "get"
+    @send external set: (t<'a>, 'a) => t<'a> = "set"
+}
