@@ -7,6 +7,24 @@ type doc
 
 let name = "Video Edit"
 
+module Header = {
+  @react.component
+  let make = Mobx.observer(() => {
+    let locale = LocaleContext.useLocale()
+
+    <header className={styles["header"]}>
+      <div />
+      <div>
+        {Store.Timeline.store.fileId->Belt.Option.isSome
+          ? <RSuite.Button size={#xs} appearance={#primary} onClick={_ => Export.make()}>
+              {locale->LocaleContext.getAsReactStr(["header", "export"])}
+            </RSuite.Button>
+          : React.null}
+      </div>
+    </header>
+  })
+}
+
 @react.component
 let make = () => {
   let url = RescriptReactRouter.useUrl()
@@ -31,12 +49,7 @@ let make = () => {
   }, [url])
 
   <div className={styles["base"]}>
-    <header className={styles["header"]}>
-      <div/>
-      <div>
-        <RSuite.Button size={#xs} appearance={#primary} onClick={_ => Export.make()}> {React.string("Export")} </RSuite.Button>
-      </div>
-    </header>
+    <Header />
     <main className={cx([styles["content"], Some("full-size")])}>
       <div className={styles["body"]}>
         {transitions((style, item) => {

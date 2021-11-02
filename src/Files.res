@@ -13,18 +13,22 @@
 
 @react.component
 let make = Mobx.observer(() => {
+  let locale = LocaleContext.useLocale()
+
   let handleSelectFile = event => {
     let files = ReactEvent.Form.currentTarget(event)["files"]
     Js.log(Js.Array.from(files))
     Store.Files.add(Js.Array.from(files))
   }
 
-  let handleFileClick = (fileId) => {
+  let handleFileClick = fileId => {
     Store.Timeline.setFileId(Some(fileId))
   }
 
   <div className={styles["base"]}>
-    <div className={styles["title"]}> {React.string(`Files`)} </div>
+    <div className={styles["title"]}>
+      {locale->LocaleContext.getAsReactStr(["files", "title"])}
+    </div>
     <div className={styles["add"]}>
       <input type_="file" onChange={handleSelectFile} multiple={true} accept=".mp4,.avi" />
     </div>
@@ -32,7 +36,8 @@ let make = Mobx.observer(() => {
       {Store.Files.store.items
       ->Map.entries
       ->Iterable.map(((id, file)) => {
-        <div key={id->Belt.Int.toString} className={styles["item"]} onClick={_ => handleFileClick(id)}>
+        <div
+          key={id->Belt.Int.toString} className={styles["item"]} onClick={_ => handleFileClick(id)}>
           <div className={styles["preview"]}>
             <VideoPreview file className={styles["video-preview"]} />
           </div>

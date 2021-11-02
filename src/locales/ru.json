@@ -3,5 +3,14 @@
         "first-name": "Andrew",
         "last-name": "Avsenin",
         "description": "UI Team-Lead Wargaming"
+    },
+    "header": {
+        "export": "Экспорт"
+    },
+    "files": {
+        "title": "Файлы"
+    },
+    "video": {
+        "non-selected": "Выберите видео"
     }
 }

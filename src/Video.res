@@ -4,6 +4,7 @@ type props
 @obj external makeProps: unit => props = ""
 
 let make = Mobx.observer((_: props) => {
+  let locale = LocaleContext.useLocale()
   let fileSrc = Store.Timeline.curretFileSrc->Mobx.readComputed
   let videoRef = React.useRef(Js.Nullable.null)
 
@@ -39,7 +40,7 @@ let make = Mobx.observer((_: props) => {
 
   <div className={styles["base"]}>
     {switch fileSrc {
-    | None => <div> {React.string("Select file")} </div>
+    | None => <div> {locale->LocaleContext.getAsReactStr(["video", "non-selected"])} </div>
     | Some(src) =>
       <div className={styles["video-container"]}>
         <video
