@@ -13,7 +13,7 @@ module Video = {
   @get external getDuration: Dom.element => float = "duration"
   @get external getReadyState: Dom.element => readyState = "readyState"
 
-  @set external onLoad: Dom.element => (unit => unit) => unit = "onloadeddata"
+  @set external onLoad: (Dom.element, unit => unit) => unit = "onloadeddata"
 
   let stop = video => {
     video->pause
@@ -32,7 +32,7 @@ module Element = {
   }
   @send external getBoundingClientRect: Dom.element => bounds = "getBoundingClientRect"
   @get external getClientWidth: Dom.element => float = "clientWidth"
-  @set @scope("style") external setTranslate: Dom.element => string => unit = "transform"
+  @set @scope("style") external setTranslate: (Dom.element, string) => unit = "transform"
 
   let setTranslateX = (element, x) => {
     element->setTranslate(`translateX(${x->Belt.Int.toString}px)`)
@@ -50,7 +50,9 @@ module Document = {
   type t
   type eventType = [#mousemove | #mouseenter | #mouseleave | #mouseup]
 
+  @val @scope("document") external activeElement: Dom.element = "activeElement"
   @val external document: t = "document"
+
   @send
   external addEventListener: (t, eventType, Dom.mouseEvent => unit) => unit = "addEventListener"
   @send
@@ -58,6 +60,9 @@ module Document = {
     "removeEventListener"
 
   @get external getPageX: Dom.mouseEvent => int = "pageX"
+  @get external getTagName: Dom.element => [#VIDEO | #BODY] = "tagName"
+
+  let isVideo = element => element->getTagName === #VIDEO
 
   let on = (event, fn) => {
     addEventListener(document, event, fn)

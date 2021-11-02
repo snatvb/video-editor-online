@@ -7,6 +7,8 @@ module Key = {
     type t = [
       | #BracketLeft
       | #BracketRight
+      | #ArrowRight
+      | #ArrowLeft
     ]
   }
 }

@@ -58,6 +58,24 @@ let make = React.memo(
       })->Some
     })
 
+    let setCurrentTimeByArrow = time => {
+      if DOM.Document.activeElement->DOM.Document.isVideo === false {
+        Store.Timeline.setForSetCurrentTime(time)
+      }
+    }
+
+    React.useEffect0(() => {
+      Window.onKeyDown(#ArrowRight, () => {
+        setCurrentTimeByArrow(state.currentTime +. 0.0016)
+      })->Some
+    })
+
+    React.useEffect0(() => {
+      Window.onKeyDown(#ArrowLeft, () => {
+        setCurrentTimeByArrow(state.currentTime -. 0.0016)
+      })->Some
+    })
+
     React.useEffect0(() => {
       Window.onKeyDown(#BracketRight, () => {
         Store.Timeline.setEnd(state.currentTime)
