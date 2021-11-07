@@ -1,7 +1,8 @@
 module Routes = {
   @react.component
   let make = () => {
-    let url = RescriptReactRouter.useUrl()
+    let url = Router.useUrl()
+
     switch url.path {
     | list{} | list{_} => <Main />
     | _ => <Redirect path="/" />
@@ -11,8 +12,5 @@ module Routes = {
 
 @react.component
 let make = () => {
-  <LocaleContext.Provider>
-    <Routes />
-    <ExportProgress />
-  </LocaleContext.Provider>
+  <LocaleContext.Provider> <Routes /> <ExportProgress /> </LocaleContext.Provider>
 }

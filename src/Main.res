@@ -27,7 +27,8 @@ module Header = {
 
 @react.component
 let make = () => {
-  let url = RescriptReactRouter.useUrl()
+  let url = Router.useUrl()
+  Js.log(url.path->Belt.List.toArray)
   let transitions = RSpring.useTransition(
     url,
     RSpring.makeOptions(
